@@ -29,8 +29,8 @@ jobs:
               -r https://test.salesforce.com \
               -s -a test
               
-       - name: Deploy
-         run: |
+      - name: Deploy
+        run: |
               chmod 777 manifest/package.xml
               cd ..
               sfdx force:source:deploy -x ../package.xml -c
