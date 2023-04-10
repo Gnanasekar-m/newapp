@@ -1,0 +1,38 @@
+name: Delta-Incremental-Build-SFDX-code
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 'gitcheckout'
+        run: |
+              ls -la
+              curl -v --request POST --url https://github.com/repo/${{ github.repository }}  --header 'authorisation: Bearer ${{ secrets.mine }}'
+              git clone https://github.com/${{ github.repository }}.git
+              cd gitdir
+              git pull
+              git checkout branch
+              
+      - name: 'install sfdx'
+        run: |
+              dir
+              wget -q0- https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz | tar xJr -
+              dir
+              ./sfdx-cli-v7.82.0-3d0c527ac6-linux-x64/install
+              sfdx --version
+              cd git
+              cd Jwt && chmod 777 server.key
+              sfdx auth:jwt:grant -u username -f server.key \
+              -i "sdfdfdfdfee34sfe" \
+              -r https://test.salesforce.com \
+              -s -a test
+              
+       - name: Deploy
+         run: |
+              chmod 777 manifest/package.xml
+              cd ..
+              sfdx force:source:deploy -x ../package.xml -c
+              
