@@ -1,1 +1,17 @@
+name: awscli
+on:
+  push:
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 'Installawscli'
+        run: |
+              ls -la
+                    
+      - name: 'Run shell Generate diff'
+        run: |
+              dir
+              
